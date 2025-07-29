@@ -47,12 +47,14 @@ var __async = (__this, __arguments, generator) => {
   });
 };
 
-// src/repositories/podcasts-repository.ts
-var podcasts_repository_exports = {};
-__export(podcasts_repository_exports, {
-  repositoryPodcast: () => repositoryPodcast
+// src/app.ts
+var app_exports = {};
+__export(app_exports, {
+  app: () => app
 });
-module.exports = __toCommonJS(podcasts_repository_exports);
+module.exports = __toCommonJS(app_exports);
+
+// src/repositories/podcasts-repository.ts
 var import_fs = __toESM(require("fs"));
 var import_path = __toESM(require("path"));
 var pathData = import_path.default.join(__dirname, "./podcasts.json" /* JSON */);
@@ -65,7 +67,45 @@ var repositoryPodcast = (podcastName) => __async(null, null, function* () {
   }
   return jsonFile;
 });
+
+// src/services/list-episodes-service.ts
+var serviceListEpisodes = () => __async(null, null, function* () {
+  const data = yield repositoryPodcast();
+  return data;
+});
+
+// src/services/filter-episodes-service.ts
+var serviceFilterEpisodes = (podcastName) => __async(null, null, function* () {
+  var _a;
+  const queryString = (_a = podcastName == null ? void 0 : podcastName.split("?p=" /* PODCASTNAME */)[1]) != null ? _a : "";
+  const data = yield repositoryPodcast(queryString);
+  return data;
+});
+
+// src/controllers/podcasts-controller.ts
+var getListEpisodes = (request, response) => __async(null, null, function* () {
+  const content = yield serviceListEpisodes();
+  response.writeHead(200 /* OK */, { "Content-Type": "application/json" /* JSON */ });
+  response.end(JSON.stringify(content));
+});
+var getFilterEpisodes = (request, response) => __async(null, null, function* () {
+  const content = yield serviceFilterEpisodes(request.url);
+  response.writeHead(200 /* OK */, { "Content-Type": "application/json" /* JSON */ });
+  response.end(JSON.stringify(content));
+});
+
+// src/app.ts
+var app = (request, response) => __async(null, null, function* () {
+  var _a, _b;
+  const [baseUrl, queryString] = (_b = (_a = request.url) == null ? void 0 : _a.split("?" /* SERVER */)) != null ? _b : "";
+  if (request.method === "GET" /* GET */ && baseUrl === "/api/list" /* LIST */) {
+    yield getListEpisodes(request, response);
+  }
+  if (request.method === "GET" /* GET */ && baseUrl === "/api/episode" /* EPISODE */) {
+    yield getFilterEpisodes(request, response);
+  }
+});
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
-  repositoryPodcast
+  app
 });

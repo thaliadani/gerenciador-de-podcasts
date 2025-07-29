@@ -58,9 +58,10 @@ module.exports = __toCommonJS(podcasts_controller_exports);
 // src/repositories/podcasts-repository.ts
 var import_fs = __toESM(require("fs"));
 var import_path = __toESM(require("path"));
-var pathData = import_path.default.join(__dirname, "./podcasts.json");
+var pathData = import_path.default.join(__dirname, "./podcasts.json" /* JSON */);
 var repositoryPodcast = (podcastName) => __async(null, null, function* () {
-  const rawData = import_fs.default.readFileSync(pathData, "utf-8");
+  const language = "utf-8";
+  const rawData = import_fs.default.readFileSync(pathData, language);
   let jsonFile = JSON.parse(rawData);
   if (podcastName) {
     jsonFile = jsonFile.filter((podcast) => podcast.podcastName === podcastName);
@@ -76,22 +77,22 @@ var serviceListEpisodes = () => __async(null, null, function* () {
 
 // src/services/filter-episodes-service.ts
 var serviceFilterEpisodes = (podcastName) => __async(null, null, function* () {
-  const data = yield repositoryPodcast(podcastName);
+  var _a;
+  const queryString = (_a = podcastName == null ? void 0 : podcastName.split("?p=" /* PODCASTNAME */)[1]) != null ? _a : "";
+  const data = yield repositoryPodcast(queryString);
   return data;
 });
 
 // src/controllers/podcasts-controller.ts
-var getListEpisodes = (req, res) => __async(null, null, function* () {
+var getListEpisodes = (request, response) => __async(null, null, function* () {
   const content = yield serviceListEpisodes();
-  res.writeHead(200, { "Content-Type": "application/json" });
-  res.end(JSON.stringify(content));
+  response.writeHead(200 /* OK */, { "Content-Type": "application/json" /* JSON */ });
+  response.end(JSON.stringify(content));
 });
-var getFilterEpisodes = (req, res) => __async(null, null, function* () {
-  var _a, _b;
-  const queryString = (_b = (_a = req.url) == null ? void 0 : _a.split("?p=")[1]) != null ? _b : "";
-  const content = yield serviceFilterEpisodes(queryString);
-  res.writeHead(200, { "Content-Type": "application/json" });
-  res.end(JSON.stringify(content));
+var getFilterEpisodes = (request, response) => __async(null, null, function* () {
+  const content = yield serviceFilterEpisodes(request.url);
+  response.writeHead(200 /* OK */, { "Content-Type": "application/json" /* JSON */ });
+  response.end(JSON.stringify(content));
 });
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {

@@ -70,8 +70,16 @@ var repositoryPodcast = (podcastName) => __async(null, null, function* () {
 
 // src/services/list-episodes-service.ts
 var serviceListEpisodes = () => __async(null, null, function* () {
+  let responseFormat = {
+    StatusCode: 0,
+    body: []
+  };
   const data = yield repositoryPodcast();
-  return data;
+  responseFormat = {
+    StatusCode: data.length !== 0 ? 200 /* OK */ : 204 /* NO_CONTENT */,
+    body: data
+  };
+  return responseFormat;
 });
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {

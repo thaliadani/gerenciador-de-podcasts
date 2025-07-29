@@ -71,9 +71,15 @@ var repositoryPodcast = (podcastName) => __async(null, null, function* () {
 // src/services/filter-episodes-service.ts
 var serviceFilterEpisodes = (podcastName) => __async(null, null, function* () {
   var _a;
+  let responseFormat = {
+    StatusCode: 0,
+    body: []
+  };
   const queryString = (_a = podcastName == null ? void 0 : podcastName.split("?p=" /* PODCASTNAME */)[1]) != null ? _a : "";
   const data = yield repositoryPodcast(queryString);
-  return data;
+  responseFormat.StatusCode = data.length !== 0 ? 200 /* OK */ : 204 /* NO_CONTENT */;
+  responseFormat.body = data;
+  return responseFormat;
 });
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {

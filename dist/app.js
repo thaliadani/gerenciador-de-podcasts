@@ -70,34 +70,51 @@ var repositoryPodcast = (podcastName) => __async(null, null, function* () {
 
 // src/services/list-episodes-service.ts
 var serviceListEpisodes = () => __async(null, null, function* () {
+  let responseFormat = {
+    StatusCode: 0,
+    body: []
+  };
   const data = yield repositoryPodcast();
-  return data;
+  responseFormat = {
+    StatusCode: data.length !== 0 ? 200 /* OK */ : 204 /* NO_CONTENT */,
+    body: data
+  };
+  return responseFormat;
 });
 
 // src/services/filter-episodes-service.ts
 var serviceFilterEpisodes = (podcastName) => __async(null, null, function* () {
   var _a;
+  let responseFormat = {
+    StatusCode: 0,
+    body: []
+  };
   const queryString = (_a = podcastName == null ? void 0 : podcastName.split("?p=" /* PODCASTNAME */)[1]) != null ? _a : "";
   const data = yield repositoryPodcast(queryString);
-  return data;
+  responseFormat.StatusCode = data.length !== 0 ? 200 /* OK */ : 204 /* NO_CONTENT */;
+  responseFormat.body = data;
+  return responseFormat;
 });
 
 // src/controllers/podcasts-controller.ts
+var defaultContent = { "Content-Type": "application/json" /* JSON */ };
 var getListEpisodes = (request, response) => __async(null, null, function* () {
   const content = yield serviceListEpisodes();
-  response.writeHead(200 /* OK */, { "Content-Type": "application/json" /* JSON */ });
-  response.end(JSON.stringify(content));
+  response.writeHead(content.StatusCode, defaultContent);
+  response.write(JSON.stringify(content.body));
+  response.end();
 });
 var getFilterEpisodes = (request, response) => __async(null, null, function* () {
   const content = yield serviceFilterEpisodes(request.url);
-  response.writeHead(200 /* OK */, { "Content-Type": "application/json" /* JSON */ });
-  response.end(JSON.stringify(content));
+  response.writeHead(content.StatusCode, defaultContent);
+  response.write(JSON.stringify(content.body));
+  response.end();
 });
 
 // src/app.ts
 var app = (request, response) => __async(null, null, function* () {
-  var _a, _b;
-  const [baseUrl, queryString] = (_b = (_a = request.url) == null ? void 0 : _a.split("?" /* SERVER */)) != null ? _b : "";
+  var _a;
+  const baseUrl = (_a = request.url) == null ? void 0 : _a.split("?" /* SERVER */)[0];
   if (request.method === "GET" /* GET */ && baseUrl === "/api/list" /* LIST */) {
     yield getListEpisodes(request, response);
   }

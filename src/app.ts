@@ -6,7 +6,7 @@ import { getFilterEpisodes, getListEpisodes } from './controllers/podcasts-contr
 
 export const app = async (request: http.IncomingMessage, response: http.ServerResponse) => {
 
-    const [baseUrl, queryString] = request.url?.split(QueryString.SERVER) ?? '';
+    const baseUrl = request.url?.split(QueryString.SERVER)[0];
 
     if (request.method === HttpMethod.GET && baseUrl === Routes.LIST) {
         await getListEpisodes(request, response);

@@ -11,5 +11,11 @@ var podcasts_default = [
     episode: "RUBENS BARRICHELLO - Flow #339",
     videoId: "4KDGTdiOV4I",
     categories: ["esporte", "corrida"]
+  },
+  {
+    podcastName: "venus",
+    episode: "xuxa",
+    videoId: "00000",
+    categories: ["musica", "humor"]
   }
 ];

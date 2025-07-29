@@ -53,12 +53,15 @@ __export(podcasts_repository_exports, {
   repositoryPodcast: () => repositoryPodcast
 });
 module.exports = __toCommonJS(podcasts_repository_exports);
-var import_fs = __toESM(require("fs"), 1);
-var import_path = __toESM(require("path"), 1);
+var import_fs = __toESM(require("fs"));
+var import_path = __toESM(require("path"));
 var pathData = import_path.default.join(__dirname, "./podcasts.json");
-var repositoryPodcast = () => __async(null, null, function* () {
+var repositoryPodcast = (podcastName) => __async(null, null, function* () {
   const rawData = import_fs.default.readFileSync(pathData, "utf-8");
-  const jsonFile = JSON.parse(rawData);
+  let jsonFile = JSON.parse(rawData);
+  if (podcastName) {
+    jsonFile = jsonFile.filter((podcast) => podcast.podcastName === podcastName);
+  }
   return jsonFile;
 });
 // Annotate the CommonJS export names for ESM import in node:

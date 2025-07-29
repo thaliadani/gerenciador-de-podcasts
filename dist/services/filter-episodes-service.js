@@ -47,36 +47,32 @@ var __async = (__this, __arguments, generator) => {
   });
 };
 
-// src/controllers/podcasts-controller.ts
-var podcasts_controller_exports = {};
-__export(podcasts_controller_exports, {
-  getListEpisodes: () => getListEpisodes
+// src/services/filter-episodes-service.ts
+var filter_episodes_service_exports = {};
+__export(filter_episodes_service_exports, {
+  serviceFilterEpisodes: () => serviceFilterEpisodes
 });
-module.exports = __toCommonJS(podcasts_controller_exports);
+module.exports = __toCommonJS(filter_episodes_service_exports);
 
 // src/repositories/podcasts-repository.ts
-var import_fs = __toESM(require("fs"), 1);
-var import_path = __toESM(require("path"), 1);
+var import_fs = __toESM(require("fs"));
+var import_path = __toESM(require("path"));
 var pathData = import_path.default.join(__dirname, "./podcasts.json");
-var repositoryPodcast = () => __async(null, null, function* () {
+var repositoryPodcast = (podcastName) => __async(null, null, function* () {
   const rawData = import_fs.default.readFileSync(pathData, "utf-8");
-  const jsonFile = JSON.parse(rawData);
+  let jsonFile = JSON.parse(rawData);
+  if (podcastName) {
+    jsonFile = jsonFile.filter((podcast) => podcast.podcastName === podcastName);
+  }
   return jsonFile;
 });
 
-// src/services/list-episodes-service.ts
-var serviceListEpisodes = () => __async(null, null, function* () {
-  const data = yield repositoryPodcast();
+// src/services/filter-episodes-service.ts
+var serviceFilterEpisodes = (podcastName) => __async(null, null, function* () {
+  const data = yield repositoryPodcast(podcastName);
   return data;
-});
-
-// src/controllers/podcasts-controller.ts
-var getListEpisodes = (req, res) => __async(null, null, function* () {
-  const content = yield serviceListEpisodes();
-  res.writeHead(200, { "Content-Type": "application/json" });
-  res.end(JSON.stringify(content));
 });
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
-  getListEpisodes
+  serviceFilterEpisodes
 });

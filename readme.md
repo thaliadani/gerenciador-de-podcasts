@@ -2,11 +2,9 @@
 Uma API Node.js com TypeScript para gerenciar episódios de podcasts em vídeo 📹
 
 ## 🌟 Funcionalidades
-- 🗂️ Listar episódios de podcasts organizados por categorias
+- 🗂️ Listar episódios de podcasts
 
 - 🔍 Filtrar episódios por nome do podcast
-
-- 📂 Gerenciar diferentes sessões/categorias de podcasts
 
 ## 📌 Exemplos de Categorias
 - 🏥 Saúde
@@ -35,9 +33,8 @@ interface PodcastModel {
 }
 ```
 ## 🚀 Rotas da API
-- GET /podcasts - Lista todos os episódios
-- GET /podcasts?category=<categoria> - Filtra por categoria
-- GET /podcasts?name=<nome> - Filtra por nome do podcast
+- GET /api/list - Lista todos os episódios
+- GET /api/episode - Filtra por nome do podcast
 
 ## 🏗️ Como Executar
 - Clone o repositório
@@ -46,4 +43,4 @@ interface PodcastModel {
 
 - Inicie o servidor: npm start
 
-- Acesse http://localhost:3000
+- Acesse http://localhost:3333

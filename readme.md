@@ -1,13 +1,49 @@
-# Podcast Manager
+# 🎙️ Podcast Manager API
+Uma API Node.js com TypeScript para gerenciar episódios de podcasts em vídeo 📹
 
-## Descrição
-Um app ao estilo,netflix onde possa centralizar diferentes episodios de podcasts separados por categoria.
+## 🌟 Funcionalidades
+- 🗂️ Listar episódios de podcasts organizados por categorias
 
-## Domínio
-Podcasts feitos em video.
+- 🔍 Filtrar episódios por nome do podcast
 
-## Funcionalidades
+- 📂 Gerenciar diferentes sessões/categorias de podcasts
 
-- Listar os episódios dos podcasts em sessões de categorias.
-    - [saúde, fitness, mentalidade, humor].
-- Filtrar episódios por nome de podcast.
+## 📌 Exemplos de Categorias
+- 🏥 Saúde
+
+- 💪 Fitness
+
+- 🧠 Mentalidade
+
+- 😂 Humor
+
+## 🛠️ Tecnologias Utilizadas
+- Node.js
+
+- TypeScript
+
+- HTTP Module
+
+## 📦 Modelo de Dados
+
+```typescript
+interface PodcastModel {
+    podcastName: string;    // Nome do podcast
+    episode: string;       // Nome/título do episódio
+    videoId: string;       // ID do vídeo (Youtube/Vimeo/etc)
+    categories: string[];  // Categorias do episódio
+}
+```
+## 🚀 Rotas da API
+- GET /podcasts - Lista todos os episódios
+- GET /podcasts?category=<categoria> - Filtra por categoria
+- GET /podcasts?name=<nome> - Filtra por nome do podcast
+
+## 🏗️ Como Executar
+- Clone o repositório
+
+- Instale as dependências: npm install
+
+- Inicie o servidor: npm start
+
+- Acesse http://localhost:3000

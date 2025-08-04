@@ -43,4 +43,4 @@ interface PodcastModel {
 
 - Inicie o servidor: npm start
 
-- Acesse http://localhost:3333
+- Acesse http://localhost:3636
